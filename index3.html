@@ -1,4 +1,4 @@
-CTYPE html>
+<!DOCTYPE html>
 <html lang="jp">
 <head>
 	<meta charset="utf-8">
@@ -16,13 +16,34 @@ CTYPE html>
 	<p><input type="button" value="開始" onclick="gameStart();"></p>
 	<div id="cells"></div>
 
+	<p id="score"> </p>
+ 
 	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script>
-		//　
+
+		var level = 0;
+		var games = [
+			['問','間']
+			,['大','太']
+			,['白','臼']
+		];
+		var MAX_LEVEL = games.length -1;
+		var DIM_FIRST = 5;
+		var DIM_DELTA = 3;
+		var dim = DIM_FIRST;
+
+		var t1;
+		var t2;
+
 		function gameStart(){
-			var dummy = '問';
-			var　seikai = '間';
-			var dim = 5;
+
+			var dummy = games[level][0];
+			var seikai = games[level][1];
+
+			if (level == 0) {
+				$('#score').empty();
+				t1 = new Date().getTime();
+			}
 
 			//　dim * dimのspan要素を作って#cellsに突っ込む
 			var cells = '';
@@ -53,7 +74,20 @@ CTYPE html>
 
 				$('#s'+i).click(function(){
 					if ($(this).text() == seikai){
-						alert("正解");
+						level++;
+						if (level > MAX_LEVEL){
+							t2 = new Date().getTime();
+							alert("GAME OVER")
+
+							$('#score').text('Your score is '+ (t2-t1)/1000	 +'!!');
+
+							level = 0;
+							dim = DIM_FIRST;
+							return false;
+						} else {
+							dim += DIM_DELTA;
+							gameStart();
+						}
 					}
 				});
 			}
@@ -62,4 +96,3 @@ CTYPE html>
 	</script>
 </body>
 </html>
-
