@@ -1,0 +1,65 @@
+CTYPE html>
+<html lang="jp">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery 間違い探しゲーム</title>
+
+	<style>
+		span {
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body style="text-align:center">
+	<h1>jQuery 間違い探しゲーム</h1>
+	<p><input type="button" value="開始" onclick="gameStart();"></p>
+	<div id="cells"></div>
+
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script>
+		//　
+		function gameStart(){
+			var dummy = '問';
+			var　seikai = '間';
+			var dim = 5;
+
+			//　dim * dimのspan要素を作って#cellsに突っ込む
+			var cells = '';
+			for (var i = 1; i <= dim * dim; i++){
+				cells += '<span id="s' + i + '"></span>';
+
+				if(i % dim == 0){
+					cells += '<br />';
+				}
+			}
+
+			$('#cells').html(cells);
+
+			// dummyで埋められた配列を作る
+			var chars = [];
+			for(i = 1; i <= dim * dim; i++){
+				chars.push(dummy);
+			}
+
+			//　配列のうち一つをseikaiにする
+			var offset = Math.floor(Math.random() * chars.length);
+			chars.splice(offset, 1 , seikai);
+
+			// span要素にそれらの配列の要素をはめこむ
+			//console.log(chars);
+			for(var i = 1; i <= chars.length; i++){
+				$('#s'+i).text(chars[i-1]);
+
+				$('#s'+i).click(function(){
+					if ($(this).text() == seikai){
+						alert("正解");
+					}
+				});
+			}
+		}
+
+	</script>
+</body>
+</html>
+
