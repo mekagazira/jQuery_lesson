@@ -44,6 +44,27 @@
 			<a href="http://www.so-net.ne.jp">so-net</a>
 	</p>
 
+<input type="text" id="name">
+<select id="members" name="members">
+	<option>hoge1</option>
+	<option>hoge2</option>
+	<option>hoge3</option>
+</select>
+
+<br>
+<button type="button" id="addvanish">add!</button>
+<br>
+<button type="button" id="moreread">もっと読む</button>
+<div id="result">
+</div>
+
+<br>
+	<input type="text" name="name" id='greetval'>
+	<input type="button" id="greet" value="push">
+	<div id="greetresult">
+	</div>
+
+
 
 	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script>
@@ -131,8 +152,8 @@
 			//$('p').text('just change');
 			// $('p').html('<a href="">click me</p>');
 
-			console.log($('input').val());
-			$('input').val('hogehogehoge');
+			// console.log($('input').val());
+			// $('input').val('hogehogehoge');
 
 			// 要素の中身を削除する。
 			// $('p').empty();
@@ -162,12 +183,77 @@
 			// $('#box').hide(5000);
 			// $('#box').fadeOut(5000);
 			// $('#box').toggle(5000);
-			$('#box').toggle(3000,function(){
-				alert("boxが消えました。");
-			});
-			$('#box').toggle(5000);
-			$('#box').toggle(5000);
+			// $('#box').toggle(3000);
+			// $('#box').toggle(3000);
+			// $('#box').toggle(3000,function(){
+			// 	alert("boxが消えました。");
+			// });
 
+			// イベント
+			$('#box').click(function(){
+				alert('hi!');
+			});
+			// メソッドチェーン
+			// イベントオブジェクト
+			$('#box')
+				.mouseover(function(){
+					$(this).css('background','red')
+				})
+				.mouseout(function(){
+					$(this).css('background','skyblue')
+				})
+				.mousemove(function(e){
+					$(this).text(e.pageX);
+				});
+
+
+			// focus
+			// blur
+			// change
+			$('#name')
+				.focus(function(){
+					$(this).css('background','red');
+				})
+				.blur(function(){
+					$(this).css('background','white');
+				});
+
+				// onメソッド
+				$('#addvanish').click(function(){
+					var p = $('<p>').text('vanish!').addClass('vanish');
+					$(this).before(p);
+				});
+				// jQueryで追加した要素に対しては効かない。
+				// $('.vanish').click(function(){
+				// 		$(this).remove();
+				// });
+				$('body').on('click','.vanish' , function(){
+					$(this).remove();
+				});
+
+				// Ajax
+				// Asyncronus JavaScript + XML
+				// htmlファイルを読み込む
+				$('#moreread').click(function(){
+					// $('#result').load('more.html');
+
+					// コールバック関数
+					$('#result').load('more.html',function(){
+						$('#result').css('color','red');
+					});
+				});
+
+				$('#greet').click(function(){
+					$.get('greet2.php',{
+						name: $('#greetval').val()
+					},function(data){
+						// greet.php用
+						// $('#greetresult').html(data);
+
+						$('#greetresult').html(data.message + '(' + data.length + ')');
+
+					})
+				});
 
 		});
 	</script>
